@@ -1,7 +1,89 @@
 ﻿@page "/"
+@inject IJSRuntime JsRuntime
 
-<h1>Hello, world!</h1>
+<button @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
+    <i class="bi bi-record-circle" style="font-size: 2rem; color:red"></i>
+    <br />
+    <span>Start</span>
+</button>
+&nbsp;
+<button @onclick="btnRecordAudioPause_Click" disabled="@RecordAudioPauseDisabled">
+    <i class="bi bi-mic-mute" style="font-size: 2rem;"></i>
+    <br />
+    <span>Pause</span>
+</button>
+&nbsp;
+<button @onclick="btnRecordAudioResume_Click" disabled="@RecordAudioResumeDisabled">
+    <i class="bi bi-mic" style="font-size: 2rem;"></i>
+    <br />
+    <span>Resume</span>
+</button>
+&nbsp;
+<button @onclick="btnRecordAudioStop_Click" disabled="@RecordAudioStopDisabled">
+    <i class="bi bi-stop" style="font-size: 2rem;"></i>
+    <br />
+    <span>Stop</span>
+</button>
 
-Welcome to your new app.
+<hr />
+<audio controls src="@mUrl" controlsList="nodownload"></audio>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code
+{
+    string? mUrl;
+
+    bool RecordAudioStartDisabled;
+    bool RecordAudioPauseDisabled = true;
+    bool RecordAudioResumeDisabled = true;
+    bool RecordAudioStopDisabled = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.Initialize", DotNetObjectReference.Create(this));
+    }
+
+    private void btnRecordAudioStart_Click()
+    {
+        mUrl = "";
+        RecordAudioStartDisabled = true;
+        RecordAudioPauseDisabled = false;
+        RecordAudioResumeDisabled = true;
+        RecordAudioStopDisabled = false;
+        JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StartRecord");
+    }
+
+    private void btnRecordAudioPause_Click()
+    {
+        RecordAudioStartDisabled = true;
+        RecordAudioPauseDisabled = true;
+        RecordAudioResumeDisabled = false;
+        RecordAudioStopDisabled = false;
+        JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.PauseRecord");
+    }
+
+    private void btnRecordAudioResume_Click()
+    {
+        RecordAudioStartDisabled = true;
+        RecordAudioPauseDisabled = false;
+        RecordAudioResumeDisabled = true;
+        RecordAudioStopDisabled = false;
+        JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.ResumeRecord");
+    }
+
+    private void btnRecordAudioStop_Click()
+    {
+        RecordAudioStartDisabled = false;
+        RecordAudioPauseDisabled = true;
+        RecordAudioResumeDisabled = true;
+        RecordAudioStopDisabled = true;
+        JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StopRecord");
+    }
+
+    [JSInvokable]
+    public async Task OnAudioUrl(string url)
+    {
+        mUrl = url;
+        await InvokeAsync(StateHasChanged);
+    }
+}

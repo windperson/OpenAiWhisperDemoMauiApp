@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using RecordUi.Data;
 
 namespace OpenAiWhisperDemoApp
 {
@@ -13,16 +12,22 @@ namespace OpenAiWhisperDemoApp
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                })
+                .ConfigureMauiHandlers(handlers =>
+                {
+#if ANDROID
+                    handlers.AddHandler<Microsoft.AspNetCore.Components.WebView.Maui.BlazorWebView, 
+                                        OpenAiWhisperDemoApp.Platforms.Android.Handlers.MauiBlazorWebViewHandler>();
+#endif
                 });
 
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
 
-            builder.Services.AddSingleton<WeatherForecastService>();
 
             return builder.Build();
         }
