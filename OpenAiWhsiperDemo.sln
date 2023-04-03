@@ -1,0 +1,60 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MAUI", "MAUI", "{C1F95F85-92C0-4A4C-9A95-222EFF55F124}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{592B3FF9-465D-4C17-9D29-863CE3F0F515}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F2BD981A-9AEF-443C-B6A1-7A86CE0255DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecordUi", "Shared\RecordUi\RecordUi.csproj", "{80EF3D7C-CFA2-4356-87B2-1BACE0558E17}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiWhisperDemoApp", "MAUI\OpenAiWhisperDemoApp\OpenAiWhisperDemoApp.csproj", "{02273E24-9608-4072-B9B6-0A9CACEA46ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WASM", "WASM", "{003CC6F4-AE4C-4A07-A6B2-EE7755F2B785}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiWhisperDemo.Wasm.Server", "Web\Wasm\OpenAiWhisperDemo.Wasm\Server\OpenAiWhisperDemo.Wasm.Server.csproj", "{571F2F1E-9258-460E-9C6D-1137F18ABA64}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiWhisperDemo.Wasm.Client", "Web\Wasm\OpenAiWhisperDemo.Wasm\Client\OpenAiWhisperDemo.Wasm.Client.csproj", "{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80EF3D7C-CFA2-4356-87B2-1BACE0558E17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80EF3D7C-CFA2-4356-87B2-1BACE0558E17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80EF3D7C-CFA2-4356-87B2-1BACE0558E17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80EF3D7C-CFA2-4356-87B2-1BACE0558E17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{571F2F1E-9258-460E-9C6D-1137F18ABA64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{571F2F1E-9258-460E-9C6D-1137F18ABA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{571F2F1E-9258-460E-9C6D-1137F18ABA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{571F2F1E-9258-460E-9C6D-1137F18ABA64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{80EF3D7C-CFA2-4356-87B2-1BACE0558E17} = {F2BD981A-9AEF-443C-B6A1-7A86CE0255DF}
+		{02273E24-9608-4072-B9B6-0A9CACEA46ED} = {C1F95F85-92C0-4A4C-9A95-222EFF55F124}
+		{003CC6F4-AE4C-4A07-A6B2-EE7755F2B785} = {592B3FF9-465D-4C17-9D29-863CE3F0F515}
+		{571F2F1E-9258-460E-9C6D-1137F18ABA64} = {003CC6F4-AE4C-4A07-A6B2-EE7755F2B785}
+		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639} = {003CC6F4-AE4C-4A07-A6B2-EE7755F2B785}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9637DFFD-E56E-4CE4-9372-AA4753D35A86}
+		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+	EndGlobalSection
+EndGlobal
