@@ -3,6 +3,7 @@ var BlazorAudioRecorder = {};
     let mStream;
     let mMediaRecorder;
     let mCaller;
+    let audioBlob;
 
     BlazorAudioRecorder.Initialize = function (vCaller) {
         mCaller = vCaller;
@@ -23,8 +24,8 @@ var BlazorAudioRecorder = {};
             mAudioChunks.push(vEvent.data);
         });
         mMediaRecorder.addEventListener('stop', () => {
-            let pAudioBlob = new Blob(mAudioChunks, { type: "audio/webm" });
-            let pAudioUrl = URL.createObjectURL(pAudioBlob);
+            audioBlob = new Blob(mAudioChunks, { type: "audio/webm" });
+            let pAudioUrl = URL.createObjectURL(audioBlob);
 
             // noinspection JSUnresolvedFunction
             mCaller.invokeMethodAsync('OnAudioUrl', pAudioUrl);
@@ -44,5 +45,11 @@ var BlazorAudioRecorder = {};
     BlazorAudioRecorder.StopRecord = function () {
         mMediaRecorder.stop();
         mStream.getTracks().forEach(pTrack => pTrack.stop());
+    };
+
+    // Extract raw data for Blazor to create multipart-form request
+    BlazorAudioRecorder.GetRawData = async function () {
+        const arrayBuffer = await audioBlob.arrayBuffer();
+        return new Uint8Array(arrayBuffer);
     };
 })();

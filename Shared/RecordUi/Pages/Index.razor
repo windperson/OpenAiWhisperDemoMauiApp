@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using RecordUi.Services
 @inject IJSRuntime JsRuntime
 
 <button @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
@@ -27,6 +28,32 @@
 
 <hr />
 <audio controls src="@mUrl" controlsList="nodownload"></audio>
+<hr />
+
+<div class="input-group">
+    <span class="input-group-text">Prompt</span>
+    <textarea class="form-control" aria-label="Prompt" @bind="Prompt"></textarea>
+</div>
+
+<br />
+
+<button @onclick="btnStt_Click" disabled="@SpeechToTextDisabled">
+    <i class="bi bi-chat-square-text" style="font-size: 2rem;"></i>
+    <br />
+    <span>Recognize</span>
+</button>
+
+<hr />
+
+<div class="card">
+    <div class="card-header">Recognized text:</div>
+    <div class="card-body">
+        <div class="card-text">
+            @SttResult
+        </div>
+    </div>
+</div>
+
 
 @code
 {
@@ -36,12 +63,23 @@
     bool RecordAudioPauseDisabled = true;
     bool RecordAudioResumeDisabled = true;
     bool RecordAudioStopDisabled = true;
+    bool SpeechToTextDisabled = true;
+
+    private ElementReference _audioDownloadTag;
+
+    private string Prompt { get; set; } = string.Empty;
+    private string SttResult { get; set; } = string.Empty;
+
+    [Inject]
+    private ISpeechToTextService? SpeechToTextService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.Initialize", DotNetObjectReference.Create(this));
     }
+
+    #region Microphone events
 
     private void btnRecordAudioStart_Click()
     {
@@ -50,6 +88,7 @@
         RecordAudioPauseDisabled = false;
         RecordAudioResumeDisabled = true;
         RecordAudioStopDisabled = false;
+        SpeechToTextDisabled = true;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StartRecord");
     }
 
@@ -59,6 +98,7 @@
         RecordAudioPauseDisabled = true;
         RecordAudioResumeDisabled = false;
         RecordAudioStopDisabled = false;
+        SpeechToTextDisabled = true;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.PauseRecord");
     }
 
@@ -68,6 +108,7 @@
         RecordAudioPauseDisabled = false;
         RecordAudioResumeDisabled = true;
         RecordAudioStopDisabled = false;
+        SpeechToTextDisabled = true;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.ResumeRecord");
     }
 
@@ -77,6 +118,7 @@
         RecordAudioPauseDisabled = true;
         RecordAudioResumeDisabled = true;
         RecordAudioStopDisabled = true;
+        SpeechToTextDisabled = false;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StopRecord");
     }
 
@@ -84,6 +126,23 @@
     public async Task OnAudioUrl(string url)
     {
         mUrl = url;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    #endregion
+
+    private async void btnStt_Click()
+    {
+        if (!string.IsNullOrEmpty(mUrl))
+        {
+            var audio = await JsRuntime.InvokeAsync<byte[]>("BlazorAudioRecorder.GetRawData");
+
+            SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt);
+        }
+        else
+        {
+            SttResult = "No audio file to process";
+        }
         await InvokeAsync(StateHasChanged);
     }
 }

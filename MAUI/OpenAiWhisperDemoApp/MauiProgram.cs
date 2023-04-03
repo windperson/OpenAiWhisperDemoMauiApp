@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 
+using OpenAiWhisperDemoApp.Services;
+
+using RecordUi.Services;
+
 namespace OpenAiWhisperDemoApp
 {
     public static class MauiProgram
@@ -21,6 +25,7 @@ namespace OpenAiWhisperDemoApp
 #endif
                 });
 
+            builder.Services.AddScoped<ISpeechToTextService, OpenAiWhisperService>();
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
