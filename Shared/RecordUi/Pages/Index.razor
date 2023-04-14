@@ -2,29 +2,36 @@
 @using RecordUi.Services
 @inject IJSRuntime JsRuntime
 
-<button @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
-    <i class="bi bi-record-circle" style="font-size: 2rem; color:red"></i>
-    <br />
-    <span>Start</span>
-</button>
-&nbsp;
-<button @onclick="btnRecordAudioPause_Click" disabled="@RecordAudioPauseDisabled">
-    <i class="bi bi-mic-mute" style="font-size: 2rem;"></i>
-    <br />
-    <span>Pause</span>
-</button>
-&nbsp;
-<button @onclick="btnRecordAudioResume_Click" disabled="@RecordAudioResumeDisabled">
-    <i class="bi bi-mic" style="font-size: 2rem;"></i>
-    <br />
-    <span>Resume</span>
-</button>
-&nbsp;
-<button @onclick="btnRecordAudioStop_Click" disabled="@RecordAudioStopDisabled">
-    <i class="bi bi-stop" style="font-size: 2rem;"></i>
-    <br />
-    <span>Stop</span>
-</button>
+<div class="flex-container">
+    <div>
+        <button type="button" class="record-btn" @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
+            <i class="bi bi-record-circle" style="color:red"></i>
+            <br />
+            <span>Start</span>
+        </button>
+    </div>
+    <div>
+        <button type="button" class="record-btn" @onclick="btnRecordAudioPause_Click" disabled="@RecordAudioPauseDisabled">
+            <i class="bi bi-mic-mute"></i>
+            <br />
+            <span>Pause</span>
+        </button>
+    </div>
+    <div>
+        <button type="button" class="record-btn" @onclick="btnRecordAudioResume_Click" disabled="@RecordAudioResumeDisabled">
+            <i class="bi bi-mic"></i>
+            <br />
+            <span>Resume</span>
+        </button>
+    </div>
+    <div>
+        <button type="button" class="record-btn" @onclick="btnRecordAudioStop_Click" disabled="@RecordAudioStopDisabled">
+            <i class="bi bi-stop"></i>
+            <br />
+            <span>Stop</span>
+        </button>
+    </div>
+</div>
 
 <hr />
 <audio controls src="@mUrl" controlsList="nodownload"></audio>
@@ -37,8 +44,8 @@
 
 <br />
 
-<button @onclick="btnStt_Click" disabled="@SpeechToTextDisabled">
-    <i class="bi bi-chat-square-text" style="font-size: 2rem;"></i>
+<button type="button" class="stt-btn" @onclick="btnStt_Click" disabled="@SpeechToTextDisabled">
+    <i class="bi bi-chat-square-text"></i>
     <br />
     <span>Recognize</span>
 </button>

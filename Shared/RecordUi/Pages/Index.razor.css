@@ -1,0 +1,34 @@
+﻿.flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+    .flex-container > div {
+        margin: 0.15em;
+        padding: 0.1em;
+    }
+
+.stt-btn, .record-btn {
+    border-radius: 10%;
+}
+
+    .stt-btn > i {
+        font-size: 3rem;
+    }
+
+    .stt-btn > span {
+        font-weight: 600;
+    }
+
+.record-btn {
+    min-width: 5em;
+}
+
+    .record-btn > i {
+        font-size: 2rem;
+    }
+
+    .record-btn > span {
+        font-weight: 600;
+    }
