@@ -3,29 +3,29 @@
 @inject IJSRuntime JsRuntime
 
 <div class="flex-container">
-    <div>
-        <button type="button" class="record-btn" @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
+    <div class="flex-item-1">
+        <button type="button" class="record-ui-btn" @onclick="btnRecordAudioStart_Click" disabled="@RecordAudioStartDisabled">
             <i class="bi bi-record-circle" style="color:red"></i>
             <br />
             <span>Start</span>
         </button>
     </div>
-    <div>
-        <button type="button" class="record-btn" @onclick="btnRecordAudioPause_Click" disabled="@RecordAudioPauseDisabled">
+    <div class="flex-item-2">
+        <button type="button" class="record-ui-btn" @onclick="btnRecordAudioPause_Click" disabled="@RecordAudioPauseDisabled">
             <i class="bi bi-mic-mute"></i>
             <br />
             <span>Pause</span>
         </button>
     </div>
-    <div>
-        <button type="button" class="record-btn" @onclick="btnRecordAudioResume_Click" disabled="@RecordAudioResumeDisabled">
+    <div class="flex-item-3">
+        <button type="button" class="record-ui-btn" @onclick="btnRecordAudioResume_Click" disabled="@RecordAudioResumeDisabled">
             <i class="bi bi-mic"></i>
             <br />
             <span>Resume</span>
         </button>
     </div>
-    <div>
-        <button type="button" class="record-btn" @onclick="btnRecordAudioStop_Click" disabled="@RecordAudioStopDisabled">
+    <div class="flex-item-4">
+        <button type="button" class="record-ui-btn" @onclick="btnRecordAudioStop_Click" disabled="@RecordAudioStopDisabled">
             <i class="bi bi-stop"></i>
             <br />
             <span>Stop</span>

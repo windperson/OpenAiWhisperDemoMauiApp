@@ -2,14 +2,54 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.5em;
 }
 
-    .flex-container > div {
-        margin: 0.15em;
-        padding: 0.1em;
+.flex-item-1 {
+    order: 1;
+}
+
+.flex-item-2 {
+    order: 2;
+}
+
+.flex-item-3 {
+    order: 3;
+}
+
+.flex-item-4 {
+    order: 4;
+}
+
+@media only screen and (max-width: 320px) {
+    .flex-container {
+        flex-wrap: wrap;
     }
 
-.stt-btn, .record-btn {
+    .flex-item-1 {
+        order: 1;
+        flex-basis: 40%;
+    }
+
+    .flex-item-2 {
+        order: 3;
+        flex-basis: 40%;
+    }
+
+    .flex-item-3 {
+        order: 4;
+        flex-basis: 40%;
+    }
+
+    .flex-item-4 {
+        order: 2;
+        flex-basis: 40%;
+    }
+}
+
+.stt-btn, .record-ui-btn {
     border-radius: 10%;
 }
 
@@ -21,14 +61,14 @@
         font-weight: 600;
     }
 
-.record-btn {
-    min-width: 5em;
+.record-ui-btn {
+    min-width: 6em;
 }
 
-    .record-btn > i {
+    .record-ui-btn > i {
         font-size: 2rem;
     }
 
-    .record-btn > span {
+    .record-ui-btn > span {
         font-weight: 600;
     }
