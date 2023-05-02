@@ -22,23 +22,19 @@ namespace OpenAiWhisperDemoApp
             {
                 microPhonePermission = await Permissions.RequestAsync<BlazorRecordAudioPermissions>();
             }
-
-            if (microPhonePermission != PermissionStatus.Granted)
-            {
-                await DisplayAlert("Permission Denied", "You must grant permission to use the microphone", "OK");
-            }
 #else
             var microPhonePermission = await Permissions.CheckStatusAsync<Permissions.Microphone>();
             if (microPhonePermission != PermissionStatus.Granted)
             {
                 microPhonePermission = await Permissions.RequestAsync<Permissions.Microphone>();
             }
-
-            if (microPhonePermission != PermissionStatus.Granted)
-            {
-                await DisplayAlert("Permission Denied", "You must grant permission to use the microphone", "OK");
-            }
 #endif
+            if (microPhonePermission == PermissionStatus.Granted)
+            {
+                return;
+            }
+            await DisplayAlert("Permission Denied", "You must grant permission to use microphone for voice recording", "OK");
+            blazorWebView.RootComponents.Clear();
         }
     }
 }

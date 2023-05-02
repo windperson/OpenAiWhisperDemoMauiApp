@@ -1,6 +1,13 @@
 ﻿@page "/"
 @using RecordUi.Services
+@using DeviceDetectorNET
+@using DeviceDetectorNET.Class
+@using DeviceDetectorNET.Parser
+@using DeviceDetectorNET.Parser.Client
+@using DeviceDetectorNET.Parser.Device
+@using DeviceDetectorNET.Results
 @inject IJSRuntime JsRuntime
+
 
 <div class="flex-container">
     <div class="flex-item-1">
@@ -77,13 +84,48 @@
     private string Prompt { get; set; } = string.Empty;
     private string SttResult { get; set; } = string.Empty;
 
+    private bool IsRunOnIosDevice { get; set; }
+
     [Inject]
     private ISpeechToTextService? SpeechToTextService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.Initialize", DotNetObjectReference.Create(this));
+
+        var userAgent = await JsRuntime.InvokeAsync<string>("GetUserAgent");
+
+        IsRunOnIosDevice = DetectRunningOnIos(userAgent);
+
+        var audioMimeType = IsRunOnIosDevice ? "audio/mp4" : "audio/webm";
+
+        await JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.Initialize", DotNetObjectReference.Create(this), audioMimeType);
+    }
+
+    private static bool DetectRunningOnIos(string userAgent)
+    {
+        DeviceDetector.SetVersionTruncation(VersionTruncation.VERSION_TRUNCATION_NONE);
+        var detector = new DeviceDetector(userAgent);
+        detector.SkipBotDetection();
+        detector.Parse();
+
+        var osName = string.Empty;
+        var osInfo = detector.GetOs();
+        if (osInfo.Success)
+        {
+            osName = osInfo.Match.Name;
+        }
+
+        var browserName = string.Empty;
+        var browserEngine = string.Empty;
+        var browserInfo = detector.GetBrowserClient();
+        if (browserInfo.Success)
+        {
+            browserName = browserInfo.Match.Name;
+            browserEngine = browserInfo.Match.Engine;
+        }
+
+        return osName.ToLower().Contains("ios") && browserEngine.ToLower().Contains("webkit") || browserName.ToLower().Contains("safari");
     }
 
     #region Microphone events
@@ -144,7 +186,14 @@
         {
             var audio = await JsRuntime.InvokeAsync<byte[]>("BlazorAudioRecorder.GetRawData");
 
-            SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt);
+            if (IsRunOnIosDevice)
+            {
+                SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt, "audio.mp4");
+            }
+            else
+            {
+                SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt);
+            }
         }
         else
         {

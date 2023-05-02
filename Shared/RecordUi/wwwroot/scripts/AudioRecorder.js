@@ -1,3 +1,6 @@
+function GetUserAgent() {
+    return window.navigator.userAgent;
+}
 var BlazorAudioRecorder = {};
 (function () {
     let mStream;
@@ -5,8 +8,11 @@ var BlazorAudioRecorder = {};
     let mCaller;
     let audioBlob;
 
-    BlazorAudioRecorder.Initialize = function (vCaller) {
+    let audioMIME = "audio/webm";
+
+    BlazorAudioRecorder.Initialize = function (vCaller, mimeType) {
         mCaller = vCaller;
+        audioMIME = mimeType;
     };
 
     BlazorAudioRecorder.StartRecord = async function () {
@@ -18,13 +24,21 @@ var BlazorAudioRecorder = {};
                 volume: 1
             }
         });
-        mMediaRecorder = new MediaRecorder(mStream, { mimeType: "audio/webm" });
+
+        try {
+            mMediaRecorder = new MediaRecorder(mStream, { mimeType: audioMIME });
+        } catch (err) {
+            console.error(err);
+            alert('MediaRecorder is not supported by this browser or config audio codec error.');
+            return;
+        }
+
         let mAudioChunks = [];
         mMediaRecorder.addEventListener('dataavailable', vEvent => {
             mAudioChunks.push(vEvent.data);
         });
         mMediaRecorder.addEventListener('stop', () => {
-            audioBlob = new Blob(mAudioChunks, { type: "audio/webm" });
+            audioBlob = new Blob(mAudioChunks, { type: audioMIME });
             let pAudioUrl = URL.createObjectURL(audioBlob);
 
             // noinspection JSUnresolvedFunction
