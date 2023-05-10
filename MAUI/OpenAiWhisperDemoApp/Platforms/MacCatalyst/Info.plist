@@ -26,5 +26,7 @@
     </array>
     <key>XSAppIconAssets</key>
     <string>Assets.xcassets/appicon.appiconset</string>
+    <key>NSMicrophoneUsageDescription</key>
+	<string>You need to allow Mic access for recording voice</string>
 </dict>
 </plist>

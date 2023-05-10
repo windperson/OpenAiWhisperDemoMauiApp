@@ -11,6 +11,17 @@ namespace OpenAiWhisperDemoApp
         public MainPage()
         {
             InitializeComponent();
+            Loaded += MainPage_Loaded;
+        }
+
+        private void MainPage_Loaded(object sender, EventArgs e)
+        {
+#if DEBUG && MACCATALYST
+            if (blazorWebView.Handler.PlatformView is WebKit.WKWebView view)
+            {
+                view.SetValueForKey(Foundation.NSObject.FromObject(true), new Foundation.NSString("inspectable"));
+            }
+#endif
         }
 
         protected override async void OnAppearing()

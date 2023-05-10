@@ -1,12 +1,9 @@
 ﻿@page "/"
+@using Microsoft.Extensions.Logging
 @using RecordUi.Services
-@using DeviceDetectorNET
-@using DeviceDetectorNET.Class
-@using DeviceDetectorNET.Parser
-@using DeviceDetectorNET.Parser.Client
-@using DeviceDetectorNET.Parser.Device
-@using DeviceDetectorNET.Results
+@using RecordUi.Utils
 @inject IJSRuntime JsRuntime
+@inject ILogger<Index> Logger
 
 
 <div class="flex-container">
@@ -95,43 +92,18 @@
 
         var userAgent = await JsRuntime.InvokeAsync<string>("GetUserAgent");
 
-        IsRunOnIosDevice = DetectRunningOnIos(userAgent);
+        IsRunOnIosDevice = BrowserDetect.RunningOnIos(userAgent);
 
         var audioMimeType = IsRunOnIosDevice ? "audio/mp4" : "audio/webm";
 
         await JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.Initialize", DotNetObjectReference.Create(this), audioMimeType);
     }
 
-    private static bool DetectRunningOnIos(string userAgent)
-    {
-        DeviceDetector.SetVersionTruncation(VersionTruncation.VERSION_TRUNCATION_NONE);
-        var detector = new DeviceDetector(userAgent);
-        detector.SkipBotDetection();
-        detector.Parse();
-
-        var osName = string.Empty;
-        var osInfo = detector.GetOs();
-        if (osInfo.Success)
-        {
-            osName = osInfo.Match.Name;
-        }
-
-        var browserName = string.Empty;
-        var browserEngine = string.Empty;
-        var browserInfo = detector.GetBrowserClient();
-        if (browserInfo.Success)
-        {
-            browserName = browserInfo.Match.Name;
-            browserEngine = browserInfo.Match.Engine;
-        }
-
-        return osName.ToLower().Contains("ios") && browserEngine.ToLower().Contains("webkit") || browserName.ToLower().Contains("safari");
-    }
-
     #region Microphone events
 
     private void btnRecordAudioStart_Click()
     {
+        Logger.LogTrace("Record Button click");
         mUrl = "";
         RecordAudioStartDisabled = true;
         RecordAudioPauseDisabled = false;
@@ -139,10 +111,12 @@
         RecordAudioStopDisabled = false;
         SpeechToTextDisabled = true;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StartRecord");
+        Logger.LogDebug("Start Recording...");
     }
 
     private void btnRecordAudioPause_Click()
     {
+        Logger.LogTrace("Pause Button click");
         RecordAudioStartDisabled = true;
         RecordAudioPauseDisabled = true;
         RecordAudioResumeDisabled = false;
@@ -153,6 +127,7 @@
 
     private void btnRecordAudioResume_Click()
     {
+        Logger.LogTrace("Resume Button click");
         RecordAudioStartDisabled = true;
         RecordAudioPauseDisabled = false;
         RecordAudioResumeDisabled = true;
@@ -163,12 +138,14 @@
 
     private void btnRecordAudioStop_Click()
     {
+        Logger.LogTrace("Stop Button click");
         RecordAudioStartDisabled = false;
         RecordAudioPauseDisabled = true;
         RecordAudioResumeDisabled = true;
         RecordAudioStopDisabled = true;
         SpeechToTextDisabled = false;
         JsRuntime.InvokeVoidAsync("BlazorAudioRecorder.StopRecord");
+        Logger.LogDebug("Stop Recording...");
     }
 
     [JSInvokable]
@@ -182,16 +159,19 @@
 
     private async void btnStt_Click()
     {
+        Logger.LogTrace("Recognize Button click");
         if (!string.IsNullOrEmpty(mUrl))
         {
             var audio = await JsRuntime.InvokeAsync<byte[]>("BlazorAudioRecorder.GetRawData");
 
             if (IsRunOnIosDevice)
             {
+                Logger.LogDebug("Start calling OpenAI Whisper model API on iOS/Safari");
                 SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt, "audio.mp4");
             }
             else
             {
+                Logger.LogDebug("Start calling OpenAI Whisper model API");
                 SttResult = await SpeechToTextService!.GetTranscription(audio, Prompt);
             }
         }
