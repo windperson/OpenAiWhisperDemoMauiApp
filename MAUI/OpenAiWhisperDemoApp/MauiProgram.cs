@@ -1,10 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.Extensions.Logging;
 
+using OpenAiWhisperDemoApp.ErrorHandling;
 using OpenAiWhisperDemoApp.Services;
 
 using RecordUi.Services;
 
 using Serilog;
+using Serilog.Sink.AppCenter;
 
 namespace OpenAiWhisperDemoApp
 {
@@ -12,9 +17,23 @@ namespace OpenAiWhisperDemoApp
     {
         public static MauiApp CreateMauiApp()
         {
+            const string appCenterSecret =
+#if ANDROID
+                "Android_AppCenter_AppSecret"
+#elif IOS
+                "iOS_AppCenter_AppSecret"
+#elif WINDOWS
+                "UWP_AppCenter_AppSecret"
+#else
+                ""
+#endif
+                ;
+
+            AppCenter.Start(appCenterSecret, typeof(Analytics), typeof(Crashes));
+
             Log.Logger = new LoggerConfiguration()
 #if DEBUG
-                .MinimumLevel.Verbose() 
+                .MinimumLevel.Verbose()
 #endif
 #if ANDROID
                 .Enrich.WithProperty("AppName","OpenAiWhisperDemoApp")
@@ -26,6 +45,7 @@ namespace OpenAiWhisperDemoApp
 #else
                 .WriteTo.Debug()
 #endif
+                .WriteTo.AppCenterSink(target: AppCenterTarget.ExceptionsAsCrashesAndEvents, appCenterSecret: appCenterSecret)
                 .CreateLogger();
 
             var builder = MauiApp.CreateBuilder();
@@ -58,6 +78,12 @@ namespace OpenAiWhisperDemoApp
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
 #endif
+
+            MauiExceptions.UnhandledException += (sender, args) =>
+            {
+                Exception ex = args.ExceptionObject as Exception;
+                Log.Fatal(ex, "Fatal Error");
+            };
 
 
             return builder.Build();
