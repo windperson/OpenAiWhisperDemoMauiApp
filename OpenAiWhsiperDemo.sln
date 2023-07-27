@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiWhisperDemo.Wasm.Serv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiWhisperDemo.Wasm.Client", "Web\Wasm\OpenAiWhisperDemo.Wasm\Client\OpenAiWhisperDemo.Wasm.Client.csproj", "{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeGen", "CodeGen", "{6F9AD52B-848B-41B4-A610-26D826316E2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConstVarCodeGenHelper", "Generator\ConstVarCodeGenHelper\ConstVarCodeGenHelper.csproj", "{A64F2817-F17B-4950-AD70-EF6A1958E836}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64F2817-F17B-4950-AD70-EF6A1958E836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64F2817-F17B-4950-AD70-EF6A1958E836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64F2817-F17B-4950-AD70-EF6A1958E836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64F2817-F17B-4950-AD70-EF6A1958E836}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +60,7 @@ Global
 		{003CC6F4-AE4C-4A07-A6B2-EE7755F2B785} = {592B3FF9-465D-4C17-9D29-863CE3F0F515}
 		{571F2F1E-9258-460E-9C6D-1137F18ABA64} = {003CC6F4-AE4C-4A07-A6B2-EE7755F2B785}
 		{A64CF441-8D46-422E-A3B1-ACDBC8DDA639} = {003CC6F4-AE4C-4A07-A6B2-EE7755F2B785}
+		{A64F2817-F17B-4950-AD70-EF6A1958E836} = {6F9AD52B-848B-41B4-A610-26D826316E2A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
