@@ -27,7 +27,7 @@
     .flex-container {
         flex-wrap: wrap;
     }
-
+          
     .flex-item-1 {
         order: 1;
         flex-basis: 40%;

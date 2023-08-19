@@ -19,11 +19,11 @@ namespace OpenAiWhisperDemoApp
         {
             const string appCenterSecret =
 #if ANDROID
-                "Android_AppCenter_AppSecret"
+                Generated.AppCenterKey.Android
 #elif IOS
-                "iOS_AppCenter_AppSecret"
+                Generated.AppCenterKey.Ios
 #elif WINDOWS
-                "UWP_AppCenter_AppSecret"
+                Generated.AppCenterKey.Windows
 #else
                 ""
 #endif
